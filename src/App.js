@@ -28,7 +28,8 @@ class App extends Component {
 		)
 			.then(res => res.json())
 			.then(resData => {
-				console.log(query);
+				// console.log(query);
+				// console.log(resData.photos.photo);
 				this.setState({ 
 					photos: resData.photos.photo,
 					loading: false,
@@ -44,7 +45,7 @@ class App extends Component {
 				<div className="container">
 					<Header />
 					<SearchForm handleSearch={this.handleSearch} />
-					<Nav navMenues={this.state.navMenues} />
+					<Nav navMenues={this.state.navMenues} handleSearch={this.handleSearch} />
 					{
 						this.state.loading
 						? <Loading />
