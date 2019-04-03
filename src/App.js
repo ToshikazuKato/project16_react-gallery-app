@@ -45,7 +45,7 @@ class App extends Component {
 				<div className="container">
 					<Header />
 					<SearchForm handleSearch={this.handleSearch} />
-					<Nav navMenues={this.state.navMenues}  />
+					<Nav navMenues={this.state.navMenues} handleSearch={this.handleSearch} />
 					{
 						this.state.loading
 						? <Loading />
