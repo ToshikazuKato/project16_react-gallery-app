@@ -28,7 +28,7 @@ class App extends Component {
 		)
 			.then(res => res.json())
 			.then(resData => {
-				// console.log(query);
+				console.log(query);
 				// console.log(resData.photos.photo);
 				this.setState({ 
 					photos: resData.photos.photo,
