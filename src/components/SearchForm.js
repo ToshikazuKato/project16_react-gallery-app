@@ -7,7 +7,7 @@ class SearchForm extends Component {
     state = {
         inputText: ''
     }
-
+	//store input value
     handleValue = e => {
         e.preventDefault();
         // console.log(e.target.value);
@@ -15,12 +15,21 @@ class SearchForm extends Component {
             inputText: e.target.value,
         });
     }
-
+	//run handleSearch by input value 
     handleSubmit = e => {
         e.preventDefault();
-        // console.log(this.query.value);
-        this.props.handleSearch(this.query.value);
-        // e.currentTarget.reset();
+		//check empty input
+		if(this.query.value){
+			this.props.handleSearch(this.query.value);
+		}else{
+			let val = document.querySelector('a.active');
+			if(val){
+				// empty input && navlink is active => handleSearch by path
+				val = val.getAttribute('href').replace('/', '');
+				this.props.handleSearch(val);
+			}
+		}
+        // e.target.value = "";
     }
 
     render() {

@@ -12,17 +12,29 @@ import Loading from "./components/Loading";
 import NotFound from "./components/NotFound";
 
 class App extends Component {
+	
 	state = {
 		photos: [],
 		navMenues: ["Japan", "UK", "US", "Russia"],
-		loading: true
+		loading: true,
+		err404: true
 	};
-
+	//fetch img when the page loaded first time
 	componentDidMount() {
-		this.handleSearch();
+		let chk = document.querySelector('li.not-found.error');
+		//console.log('didmount running');
+		if(!chk){
+			this.handleSearch("Japan");
+		}else{
+			this.setState({
+				err404:false
+			});
+		}
+		
 	}
 
-	handleSearch = (query = "Japan") => {
+	//fetch api
+	handleSearch = (query) => {
 		fetch(
 			`https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`
 		)
@@ -46,20 +58,21 @@ class App extends Component {
 					<Header />
 					<SearchForm handleSearch={this.handleSearch} />
 					<Nav navMenues={this.state.navMenues} handleSearch={this.handleSearch} />
-					{
-						this.state.loading
-						? <Loading />
-						:<PhotoContainer photos={this.state.photos} />								
-					}
+					
 					<Switch>
 						<Route exact path="/" />
-						<Route path={`/Japan`} />
-						<Route path={`/UK`} />
-						<Route path={`/US`} />
-						<Route path={`/Russia`} />
-						<Route component={NotFound} />
-					</Switch>
-							
+						{
+							this.state.navMenues.map( (val, index) => {
+								return <Route path={`/${val}`} key={index} />
+							})
+						}
+						<Route render={()=><NotFound title="404 Error" text="Please go back"/>} />
+					</Switch>	
+					{
+						this.state.loading && this.state.err404
+							? <Loading />
+							: <PhotoContainer photos={this.state.photos} />
+					}
 				</div>
 			</BrowserRouter>
 		);
